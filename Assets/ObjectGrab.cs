@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectGrab : MonoBehaviour
 {
+    public static bool isGrabbed = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,10 +22,18 @@ public class ObjectGrab : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (isGrabbed == false)
+                    {
+                        isGrabbed = true;
+                    }
                     OnMouseDown();
                 }
                 if (Input.GetMouseButton(0))
                 {
+                    if (isGrabbed == false)
+                     {
+                        isGrabbed = true;
+                     }
                     OnMouseDrag();
                 }
             }

@@ -8,6 +8,13 @@ public class ObjectClick : MonoBehaviour
    public Animator anim;
    private bool etatF = true;
    private bool etatO = false;
+   private bool etat1 = false;
+   private bool etat2 = false;
+   private bool cube2Counted = false;
+   private int count_cube = 0;
+   public Renderer door;
+   public Material Vert_open;
+   private bool materialChanged = false;
 
    void Update()
     {
@@ -22,14 +29,27 @@ public class ObjectClick : MonoBehaviour
             {
                 if (Input.GetMouseButton(0))
                 {
+                    if (etat1 == false)
+                    {
+                        etat1 = true;
+                        count_cube++;
+                    }
                     rig.AddForce(Camera.main.transform.forward * 10);
                 }
             }
-            if (hit.collider.gameObject.name == "Cube")
+            if (rig != null)
             {
-                if (Input.GetMouseButton(0))
+                if (hit.collider.gameObject.name == "Cube")
                 {
-                    rig.AddForce(rig.transform.up * force, ForceMode.Impulse);
+                    if (Input.GetMouseButton(0))
+                    {
+                        if (etat2 == false)
+                        {
+                            etat2 = true;
+                            count_cube++;
+                        }
+                        rig.AddForce(rig.transform.up * force, ForceMode.Impulse);
+                    }
                 }
             }
             if (hit.collider.gameObject.name == "Porte")
@@ -40,21 +60,35 @@ public class ObjectClick : MonoBehaviour
                 }
             }
         }
+
+        if (ObjectGrab.isGrabbed == true && cube2Counted == false)
+        {
+            count_cube ++;
+            cube2Counted = true;
+        }
+
+        if (count_cube == 3 && materialChanged == false)
+        {
+            door.material = Vert_open;
+            materialChanged = true;
+        }
     }
 
     public void Manage()
-    {
-        if (etatF)
+    {   if (count_cube == 3)
         {
-            anim.Play("DoorOpen");
-            etatF = false;
-            etatO = true;
-        }
-        else if (etatO)
-        {
-            anim.Play("DoorClose");
-            etatF = true;
-            etatO = false;
+            if (etatF)
+            {
+                anim.Play("DoorOpen");
+                etatF = false;
+                etatO = true;
+            }
+            else if (etatO)
+            {
+                anim.Play("DoorClose");
+                etatF = true;
+                etatO = false;
+            }
         }
     }
 }
