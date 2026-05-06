@@ -18,6 +18,10 @@ public class PlayerBehaviorScript : MonoBehaviour
     public Canvas canvas_gamePlaying;
     public TMPro.TextMeshProUGUI gameOverTimer;
     public TMPro.TextMeshProUGUI gameOverLaserCount;
+    public TMPro.TextMeshProUGUI scoreText;
+    private int score = 0;
+    private int timescore = 0;
+    private int laserscore = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,6 +50,7 @@ public class PlayerBehaviorScript : MonoBehaviour
 
         if (isGameOver)
         {
+            ScoreGame();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -87,5 +92,29 @@ public class PlayerBehaviorScript : MonoBehaviour
     public void QuitGame()
     {
         UnityEditor.EditorApplication.isPlaying = false;
+    }
+
+    private void ScoreGame()
+    {
+        if (laserCount <= 5)
+        {
+            laserscore = 6 - laserCount;
+        }
+        else
+        {
+            laserscore = 0;
+        }
+
+        if (timer <= 60f)
+        {
+            timescore = 10 - Mathf.FloorToInt(timer / 6f);
+        }
+        else
+        {
+            timescore = 0;
+        }
+
+        score = laserscore + timescore + 4;
+        scoreText.text = "Score : " + score;
     }
 }
